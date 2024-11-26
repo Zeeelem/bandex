@@ -12,42 +12,72 @@ export class UsersService {
     constructor(@InjectModel(User) private userRepository: typeof User) {}
 
     async createUser(dto: CreateUserDto): Promise<CreateUserDto> {
-        dto.password = await this.hashPassword(dto.password);
-        const user = await this.userRepository.create(dto);
-        return user;
+        try {
+            dto.password = await this.hashPassword(dto.password);
+            const user = await this.userRepository.create(dto);
+            return user;
+        } catch (error) {
+            throw new Error(error);
+        }
     }
 
-    async findUserByEmail(email: string) {
-        return this.userRepository.findOne({ where: { email: email } });
+    async findUserByEmail(email: string): Promise<User> {
+        try {
+            return this.userRepository.findOne({
+                where: { email: email },
+                include: {
+                    model: Watchlist,
+                    required: false,
+                },
+            });
+        } catch (error) {
+            throw new Error(error);
+        }
     }
 
-    async hashPassword(password) {
-        const userPassword = await bcrypt.hash(password, 10);
-        return userPassword;
+    async hashPassword(password: string): Promise<string> {
+        try {
+            const userPassword = await bcrypt.hash(password, 10);
+            return userPassword;
+        } catch (error) {
+            throw new Error(error);
+        }
     }
 
-    async publicUser(email: string) {
-        return this.userRepository.findOne({
-            where: { email },
-            attributes: { exclude: ["password"] },
-            include: {
-                model: Watchlist,
-                required: false,
-            },
-        });
+    async publicUser(email: string): Promise<User> {
+        try {
+            return this.userRepository.findOne({
+                where: { email },
+                attributes: { exclude: ["password"] },
+                include: {
+                    model: Watchlist,
+                    required: false,
+                },
+            });
+        } catch (error) {
+            throw new Error(error);
+        }
     }
 
     async updateUser(email: string, dto: UpdateUserDto): Promise<UpdateUserDto> {
-        await this.userRepository.update(dto, { where: { email } });
-        return dto;
+        try {
+            await this.userRepository.update(dto, { where: { email } });
+            return dto;
+        } catch (error) {
+            throw new Error(error);
+        }
     }
 
     async deleteUser(email: string) {
-        const user = await this.userRepository.destroy({ where: { email } });
-        if (user) {
-            return { message: `Пользователь с таким email ${email} успешно удален` };
-        } else {
-            return "не существует пользователь с таким email";
+        try {
+            const user = await this.userRepository.destroy({ where: { email } });
+            if (user) {
+                return { message: `Пользователь с таким email ${email} успешно удален` };
+            } else {
+                return "не существует пользователь с таким email";
+            }
+        } catch (error) {
+            throw new Error(error);
         }
     }
 }
