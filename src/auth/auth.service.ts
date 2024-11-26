@@ -19,7 +19,7 @@ export class AuthService {
     return this.userService.createUser(dto)
   }
 
-  async loginUser(dto: UserLoginDto): Promise<any>{
+  async loginUser(dto: UserLoginDto): Promise<AuthUserResponse>{
     const existUser = await this.userService.findUserByEmail(dto.email)
     if(!existUser) throw new HttpException('Неверный пароль или логин',HttpStatus.BAD_REQUEST);
     

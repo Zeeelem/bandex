@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Patch, Post, Query, Req, UseGuards } fro
 import { WatchlistService } from "./watchlist.service";
 import { WatchlistDto } from "./dto";
 import { JwtAuthGuard } from "src/guards/jwt-guard";
+import { CreateAssetResponse } from "./response";
 
 @Controller("watchlist")
 export class WatchlistController {
@@ -9,7 +10,7 @@ export class WatchlistController {
 
     @UseGuards(JwtAuthGuard)
     @Post("create")
-    createAsset(@Body() assetDto: WatchlistDto, @Req() req) {
+    createAsset(@Body() assetDto: WatchlistDto, @Req() req): Promise<CreateAssetResponse> {
         const user = req.user;
         return this.watchListService.createAsset(user, assetDto);
     }

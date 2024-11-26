@@ -1,18 +1,22 @@
 import { IsString } from "class-validator";
 
+class userResponse {
+    @IsString()
+    readonly firstName: string;
+
+    @IsString()
+    readonly lastName: string;
+
+    @IsString()
+    readonly email: string;
+
+    @IsString()
+    readonly password: string;
+}
+
 export class AuthUserResponse {
-  @IsString()
-  readonly firstName: string;
+    user: userResponse;
 
-  @IsString()
-  readonly lastName: string;
-
-  @IsString()
-  readonly email: string;
-
-  @IsString()
-  readonly password: string;
-
-  @IsString()
-  readonly token: string;
+    @IsString()
+    readonly token: string;
 }
