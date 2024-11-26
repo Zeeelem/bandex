@@ -7,21 +7,21 @@ import { JwtAuthGuard } from "src/guards/jwt-guard";
 
 @Controller("auth")
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+    constructor(private readonly authService: AuthService) {}
 
-  @Post("/register")
-  register(@Body() dto: CreateUserDto): Promise<CreateUserDto> {
-    return this.authService.registerUser(dto);
-  }
+    @Post("/register")
+    register(@Body() dto: CreateUserDto): Promise<CreateUserDto> {
+        return this.authService.registerUser(dto);
+    }
 
-  @Post("/login")
-  login(@Body() dto: UserLoginDto): Promise<AuthUserResponse> {
-    return this.authService.loginUser(dto);
-  }
+    @Post("/login")
+    login(@Body() dto: UserLoginDto): Promise<AuthUserResponse> {
+        return this.authService.loginUser(dto);
+    }
 
-  @UseGuards(JwtAuthGuard)
-  @Post("/test")
-  test() {
-    return true;
-  }
+    @UseGuards(JwtAuthGuard)
+    @Post("/test")
+    test() {
+        return true;
+    }
 }

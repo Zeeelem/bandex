@@ -27,7 +27,7 @@ export class AuthService {
     if(!validatePassword) throw new HttpException('Неверный пароль или логин',HttpStatus.BAD_REQUEST);
     const user = await this.userService.publicUser(dto.email)
     const token = await this.tokenService.generateJwtToken(user)
-    return {...user, token}    
+    return {user, token}
   }
 
   
